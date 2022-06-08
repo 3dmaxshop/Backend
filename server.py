@@ -23,7 +23,7 @@ def add_model():
     if hcesk_model_name_in_models(payload, models):
         models.append(payload)
         return payload
-    return "Модель с таким именем уже есть в базе"
+    return json.dumps([{"Error": "Модель с таким именем уже есть в базе"}])
     
 
 if __name__ == '__main__':
