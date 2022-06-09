@@ -6,7 +6,7 @@ app = Flask(__name__)
 models = [{'name': 'sofa1','color': 'blue','catigories': 'sofa',},
            {'name': 'sofa2','color': 'red','catigories': 'sofa',}]
 
-def hcesk_model_name_in_models(payload, models):
+def check_model_name_in_unique(payload, models):
     for model in models:
         if payload['name'] == model['name']:
             return False
@@ -20,10 +20,11 @@ def get_models():
 @app.post('/api/v1/models/')
 def add_model():
     payload = request.json
-    if hcesk_model_name_in_models(payload, models):
-        models.append(payload)
-        return payload
-    return json.dumps([{"Error": "Модель с таким именем уже есть в базе"}])
+    if not check_model_name_in_unique(payload, models):
+        return json.dumps([{"Error": "Модель с таким именем уже есть в базе"}])
+    models.append(payload)
+    return payload
+    
     
 
 if __name__ == '__main__':
