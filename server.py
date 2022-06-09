@@ -19,10 +19,6 @@ def check_model_id_in_unique(model_id, models):
             return model
     return False
 
-zero_model_id = 0
-
-#GET /api/v1/models/1 - получить модель с ид. 1
-
 @app.get('/api/v1/models/<int:model_id>')
 def get_model_from_id(model_id):
     id_model = model_id
