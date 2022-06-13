@@ -4,10 +4,6 @@ import json
 
 app = Flask(__name__)
 
-
-
-
-
 class Storage:
     def __init__(self):
         self.models = {}
@@ -34,6 +30,26 @@ class Storage:
         model['id'] = self.last_id
         self.models[model['id']] = model
         self.model_names.add(model['name'])
+
+    def change(self, model_id, change_model) -> dict:
+        # Проверить изменилось ли имя модели
+        old_name = self.models[model_id]['name']
+        new_name = change_model['name']
+
+        if old_name == new_name:
+            self.models[model_id] = change_model
+            self.models[model_id]['id'] = model_id
+            return self.models[model_id]
+
+        if old_name != new_name and self.check_model_name_unique(new_name):
+            self.model_names.remove(old_name)
+            self.model_names.add(new_name)
+            self.models[model_id] = change_model
+            self.models[model_id]['id'] = model_id
+            return self.models[model_id]
+            
+        return abort(409,"Модель с таким именем уже есть в базе")
+
 
 storage = Storage()
 
@@ -63,6 +79,14 @@ def add_model():
         abort(409,"Модель с таким именем уже есть в базе")
     storage.add(payload)
     return payload
+
+@app.put('/api/v1/models/<int:model_id>')
+def change_model(model_id):
+    payload = request.json
+    change_model = storage.change(model_id, payload)
+    return change_model
+
+
     
     
 
