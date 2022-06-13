@@ -1,7 +1,6 @@
 from unicodedata import name
 from flask import Flask, request, abort
 import json
-from shop.models import models_list
 
 app = Flask(__name__)
 
@@ -10,9 +9,9 @@ app = Flask(__name__)
 
 
 class Storage:
-    def __init__(self, models):
-        self.models = {model['id']: model for model in models}
-        self.model_names = {model['name'] for model in models}
+    def __init__(self):
+        self.models = {}
+        self.model_names = set()
         self.last_id = 0
 
     def check_model_name_unique(self,name):
@@ -23,7 +22,8 @@ class Storage:
 
     def delete(self, model_id):
         model = self.models[model_id]
-        self.model_names.pop(model['name'])
+        model_name = model['name']
+        self.model_names.remove(model_name)
         self.models.pop(model_id)
     
     def get_all(self):
@@ -33,9 +33,9 @@ class Storage:
         self.last_id += 1
         model['id'] = self.last_id
         self.models[model['id']] = model
-        self.model_names = model['name']
+        self.model_names.add(model['name'])
 
-storage = Storage(models_list)
+storage = Storage()
 
 @app.delete('/api/v1/models/<int:model_id>')
 def delete_model_from_id(model_id):
@@ -59,12 +59,10 @@ def get_models():
 @app.post('/api/v1/models/')
 def add_model():
     payload = request.json
-    if not storage.check_model_name_unique(payload):
+    if not storage.check_model_name_unique(payload["name"]):
         abort(409,"Модель с таким именем уже есть в базе")
     storage.add(payload)
     return payload
     
     
 
-if __name__ == '__main__':
-    app.run(debug=True)
