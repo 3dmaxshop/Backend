@@ -26,7 +26,10 @@ class Storage:
         self.model_names.add(model['name'])
 
     def change(self, model_id, change_model) -> dict:
-        # Проверить изменилось ли имя модели
+
+        if model_id not in self.models.keys():
+            return "Index_not_found_eror"
+
         old_name = self.models[model_id]['name']
         new_name = change_model['name']
 
