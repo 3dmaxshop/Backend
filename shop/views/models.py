@@ -1,6 +1,7 @@
 from ast import Return
 from flask import Flask, request, abort, Blueprint
 import json
+from shop.errors import AppError
 from shop.storage import Storage
 
 storage = Storage()
@@ -38,10 +39,8 @@ def add_model():
 @routes.put('/<int:model_id>')
 def change_model(model_id):
     payload = request.json
-    try:
-        return storage.change(model_id, payload)
-    except ValueError as err:
-        abort(400, str(err))
+    return storage.change(model_id, payload)
+   
 
 
 

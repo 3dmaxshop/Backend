@@ -1,4 +1,5 @@
 from typing import Any
+from shop.errors import AppError, NotFoundError, Conflict, IndexNotFoundError
 
 
 class Storage:
@@ -31,7 +32,7 @@ class Storage:
     def change(self, model_id:int, change_model:dict[str, Any]) -> dict[str, Any]:
 
         if model_id not in self.models.keys():
-            raise ValueError("Index_not_found_eror")
+            raise IndexNotFoundError(f'reason: balloon id {model_id} not found')
 
         old_name = self.models[model_id]['name']
         new_name = change_model['name']
@@ -45,5 +46,5 @@ class Storage:
             self.model_names.add(new_name)
             self.models[model_id] = change_model
             return self.models[model_id]
-            
-        raise ValueError("Model_dublicate_eror")
+        raise Conflict(change_model, f'reason: balloon name {new_name} is not unique')   
+        
