@@ -1,3 +1,6 @@
+from typing import Any
+
+
 class Storage:
     def __init__(self):
         self.models = {}
@@ -25,24 +28,22 @@ class Storage:
         self.models[model['id']] = model
         self.model_names.add(model['name'])
 
-    def change(self, model_id, change_model) -> dict:
+    def change(self, model_id:int, change_model:dict[str, Any]) -> dict[str, Any]:
 
         if model_id not in self.models.keys():
-            return "Index_not_found_eror"
+            raise ValueError("Index_not_found_eror")
 
         old_name = self.models[model_id]['name']
         new_name = change_model['name']
 
         if old_name == new_name:
             self.models[model_id] = change_model
-            self.models[model_id]['id'] = model_id
             return self.models[model_id]
 
         if old_name != new_name and self.check_model_name_unique(new_name):
             self.model_names.remove(old_name)
             self.model_names.add(new_name)
             self.models[model_id] = change_model
-            self.models[model_id]['id'] = model_id
             return self.models[model_id]
             
-        return "Model_dublicate_eror"
+        raise ValueError("Model_dublicate_eror")

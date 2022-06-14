@@ -1,24 +1,26 @@
+from ast import Return
 from flask import Flask, request, abort, Blueprint
 import json
-from storage import Storage
+from shop.storage import Storage
 
 storage = Storage()
 
-routes = Blueprint('server', __name__)
+routes = Blueprint('models', __name__)
 
 @routes.delete('/<int:model_id>')
 def delete_model_from_id(model_id):
     model = storage.get_by_id(model_id)
     if not model:
-        return json.dumps([{'Error': f'Модель с id: {model_id} не найдена в базе'}])
+        abort (404, "model not found")
     storage.delete(model_id)
-    return json.dumps([{'result': f'Модель с id: {model_id} удалена'}])
+    return {}, 204
+    
 
 @routes.get('/<int:model_id>')
 def get_model_from_id(model_id):
     model = storage.get_by_id(model_id)
     if not model:
-        return json.dumps([{'Error': f'Модель с id: {model_id} не найдена в базе'}])
+        abort (404, "model not found")
     return json.dumps(model)
 
 @routes.get('/')
@@ -36,14 +38,11 @@ def add_model():
 @routes.put('/<int:model_id>')
 def change_model(model_id):
     payload = request.json
-    change_model = storage.change(model_id, payload)
-    if change_model == "Model_dublicate_eror":
-        return abort(409,"Модель с таким именем уже есть в базе")
+    try:
+        return storage.change(model_id, payload)
+    except ValueError as err:
+        abort(400, str(err))
 
-    if change_model == "Index_not_found_eror":
-        return abort(409,"Модель c указанным индексом не существует")
-   
-    return change_model
 
 
     
