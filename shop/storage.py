@@ -32,7 +32,7 @@ class Storage:
     def change(self, model_id:int, change_model:dict[str, Any]) -> dict[str, Any]:
 
         if model_id not in self.models.keys():
-            raise IndexNotFoundError(f'reason: balloon id {model_id} not found')
+            raise IndexNotFoundError(f'reason: model id {model_id} not found')
 
         old_name = self.models[model_id]['name']
         new_name = change_model['name']
@@ -46,5 +46,6 @@ class Storage:
             self.model_names.add(new_name)
             self.models[model_id] = change_model
             return self.models[model_id]
-        raise Conflict(change_model, f'reason: balloon name {new_name} is not unique')   
+            
+        raise Conflict(change_model, f'reason: model name {new_name} is not unique')   
         
