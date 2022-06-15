@@ -25,11 +25,5 @@ class NotFoundError(AppError):
         self.entity = entity
         self.info = info
 
-class IndexNotFoundError(AppError):
 
-    status = 404
-    
-    def __init__(self, info:str) -> None:
-        super().__init__(reason=f'{info}', status = self.status)
-        self.info = info
 

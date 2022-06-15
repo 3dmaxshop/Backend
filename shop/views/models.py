@@ -1,7 +1,8 @@
 from ast import Return
+from xml.dom import NotFoundErr
 from flask import Flask, request, abort, Blueprint
 import json
-from shop.errors import AppError
+from shop.errors import AppError,NotFoundError, Conflict
 from shop.storage import Storage
 
 storage = Storage()
@@ -12,7 +13,7 @@ routes = Blueprint('models', __name__)
 def delete_model_from_id(model_id):
     model = storage.get_by_id(model_id)
     if not model:
-        abort (404, "model not found")
+        raise NotFoundError('',f'model {model_id} not found')
     storage.delete(model_id)
     return {}, 204
     
@@ -21,7 +22,7 @@ def delete_model_from_id(model_id):
 def get_model_from_id(model_id):
     model = storage.get_by_id(model_id)
     if not model:
-        abort (404, "model not found")
+        raise NotFoundError('',f'model {model_id} not found')
     return json.dumps(model)
 
 @routes.get('/')
@@ -31,8 +32,9 @@ def get_models():
 @routes.post('/')
 def add_model():
     payload = request.json
-    if not storage.check_model_name_unique(payload["name"]):
-        abort(409,"Модель с таким именем уже есть в базе")
+    model_name = payload["name"]
+    if not storage.check_model_name_unique(model_name):
+        raise Conflict(model_name, f'reason: model name {model_name} is not unique')
     storage.add(payload)
     return payload
 
