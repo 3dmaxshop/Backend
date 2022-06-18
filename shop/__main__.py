@@ -1,13 +1,12 @@
-from flask import Flask, abort
+from flask import Flask
+
 from shop.errors import AppError
 from shop.views import models
-
 
 
 def handle_app_errors(error: AppError):
     return {'error': error.reason}, error.status
 
-    
 
 app = Flask(__name__)
 
