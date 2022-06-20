@@ -1,11 +1,17 @@
+import logging
+
 from flask import Flask
 
 from shop.errors import AppError
 from shop.views import models
 
+logger = logging.getLogger(__name__)
+
 
 def handle_app_errors(error: AppError):
-    return {'error': error.reason}, error.status
+    err = {'error': error.reason}, error.status
+    logger.warning('error occurred: $s', err)
+    return err
 
 
 app = Flask(__name__)
@@ -15,3 +21,5 @@ app.register_blueprint(models.routes, url_prefix='/api/v1/models')
 
 if __name__ == '__main__':
     app.run()
+    logging.basicConfig(level=logging.DEBUG)
+    logger.info('application start')
