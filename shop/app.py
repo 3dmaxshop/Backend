@@ -14,8 +14,6 @@ def handle_app_errors(error: AppError):
     return err
 
 
-def app():
-    flask_app = Flask(__name__)
-    flask_app.register_error_handler(AppError, handle_app_errors)
-    flask_app.register_blueprint(models.routes, url_prefix='/api/v1/models')
-    flask_app.run()
+app = Flask(__name__)
+app.register_error_handler(AppError, handle_app_errors)
+app.register_blueprint(models.routes, url_prefix='/api/v1/models')
