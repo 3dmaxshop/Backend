@@ -43,8 +43,8 @@ def add_model():
 
 
 @routes.put('/<int:model_uid>')
-def change_model(model_uid):
+def change_model(model_id):
     payload = request.json
     model = CorrectModel(**payload)
     logger.debug('change model')
-    return storage.change(model_uid, model.dict())
+    return storage.change(model_id, model.dict())
