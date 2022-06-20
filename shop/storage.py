@@ -19,7 +19,7 @@ class Storage:
         return model
 
     def delete(self, model_uid):
-        model = self.get_by_id(model_uid)
+        model = self.get_by_uid(model_uid)
         self.model_names.remove(model['name'])
         self.models.pop(model_uid)
 

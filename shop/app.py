@@ -1,7 +1,6 @@
 import logging
 
 from flask import Flask
-
 from pydantic import ValidationError
 
 from shop.errors import AppError
