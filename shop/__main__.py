@@ -8,4 +8,4 @@ logger = logging.getLogger(__name__)
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     logger.info('application start')
-    app()
+    app.run()

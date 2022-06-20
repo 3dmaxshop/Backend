@@ -15,14 +15,13 @@ def handle_app_errors(error: AppError):
     return err
 
 
+
 def handle_validation_errors(error: ValidationError):
     logger.warning(str(error))
     return {'error': error.errors()}, 422
 
+app = Flask(__name__)
+app.register_error_handler(AppError, handle_app_errors)
+flask_app.register_error_handler(ValidationError, handle_validation_errors)
+app.register_blueprint(models.routes, url_prefix='/api/v1/models')
 
-def app():
-    flask_app = Flask(__name__)
-    flask_app.register_error_handler(AppError, handle_app_errors)
-    flask_app.register_error_handler(ValidationError, handle_validation_errors)
-    flask_app.register_blueprint(models.routes, url_prefix='/api/v1/models')
-    flask_app.run()
