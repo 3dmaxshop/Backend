@@ -3,6 +3,7 @@ import logging
 
 from flask import Blueprint, request
 
+from shop.schemas import CorrectModel
 from shop.storage import Storage
 
 logger = logging.getLogger(__name__)
@@ -35,12 +36,14 @@ def get_models():
 @routes.post('/')
 def add_model():
     payload = request.json
+    model = CorrectModel(**payload)
     logger.debug('add model')
-    return storage.add(payload)
+    return storage.add(model)
 
 
 @routes.put('/<int:model_id>')
 def change_model(model_id):
     payload = request.json
+    model = CorrectModel(**payload)
     logger.debug('change model')
-    return storage.change(model_id, payload)
+    return storage.change(model_id, model)
