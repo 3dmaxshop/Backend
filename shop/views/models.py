@@ -1,9 +1,9 @@
-import orjson
 import logging
 
+import orjson
 from flask import Blueprint, request
 
-from shop.schemas import CorrectModel
+from shop.schemas import Model
 from shop.storage import Storage
 
 logger = logging.getLogger(__name__)
@@ -37,7 +37,7 @@ def get_models():
 def add_model():
     payload = request.json
     payload['uid'] = -1
-    model = CorrectModel(**payload)
+    model = Model(**payload)
     logger.debug('add model')
     return storage.add(model.dict())
 
@@ -45,6 +45,6 @@ def add_model():
 @routes.put('/<int:model_id>')
 def change_model(model_id):
     payload = request.json
-    model = CorrectModel(**payload)
+    model = Model(**payload)
     logger.debug('change model')
     return storage.change(model_id, model.dict())

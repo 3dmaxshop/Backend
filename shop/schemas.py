@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 
-class CorrectModel(BaseModel):
+class Model(BaseModel):
     name: str
     color: str
     uid: int
