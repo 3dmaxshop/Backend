@@ -13,16 +13,16 @@ storage = Storage()
 routes = Blueprint('models', __name__)
 
 
-@routes.delete('/<int:model_uid>')
-def delete_model_from_uid(model_uid):
-    storage.delete(model_uid)
+@routes.delete('/<int:model_id>')
+def delete_model_from_uid(model_id):
+    storage.delete(model_id)
     logger.debug('delete model')
     return {}, 204
 
 
-@routes.get('/<int:model_uid>')
-def get_model_from_uid(model_uid):
-    model = storage.get_by_uid(model_uid)
+@routes.get('/<int:model_id>')
+def get_model_from_uid(model_id):
+    model = storage.get_by_uid(model_id)
     logger.debug('get model from uid')
     return model.json()
 
@@ -42,7 +42,7 @@ def add_model():
     return storage.add(model.dict())
 
 
-@routes.put('/<int:model_uid>')
+@routes.put('/<int:model_id>')
 def change_model(model_id):
     payload = request.json
     model = CorrectModel(**payload)
