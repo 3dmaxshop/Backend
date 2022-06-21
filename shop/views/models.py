@@ -24,7 +24,7 @@ def delete_model_from_uid(model_id):
 def get_model_from_uid(model_id):
     model = storage.get_by_uid(model_id)
     logger.debug('get model from uid')
-    return model.json()
+    return orjson.dumps(model)
 
 
 @routes.get('/')
