@@ -10,6 +10,7 @@ Flask = "^2.1.2"
 pydantic = "^1.9.1"
 SQLAlchemy = "^1.4.37"
 psycopg2-binary = "^2.9.3"
+orjson = "^3.7.2"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.961"
