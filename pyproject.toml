@@ -16,6 +16,7 @@ orjson = "^3.7.2"
 mypy = "^0.961"
 wemake-python-styleguide = "^0.16.1"
 flake8 = "^4.0.1"
+sqlalchemy-stubs = "^0.4"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
