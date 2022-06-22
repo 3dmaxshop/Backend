@@ -5,14 +5,14 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Python: модуль",
+      "name": "Python: dbmodels",
       "type": "python",
       "request": "launch",
       "module": "shop.dbmodels",
       "justMyCode": true
     },
     {
-      "name": "Python: модуль",
+      "name": "Python: shop",
       "type": "python",
       "request": "launch",
       "module": "shop",
