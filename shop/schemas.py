@@ -6,3 +6,6 @@ class Model(BaseModel):
     color: str
     uid: int
     catigories: str
+
+    class Config:
+        orm_mode = True
