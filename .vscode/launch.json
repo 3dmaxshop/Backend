@@ -5,11 +5,10 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Python: текущий файл",
+      "name": "Python: модуль",
       "type": "python",
       "request": "launch",
-      "program": "${file}",
-      "console": "internalConsole",
+      "module": "shop.dbmodels",
       "justMyCode": true
     },
     {

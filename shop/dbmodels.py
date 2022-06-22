@@ -1,5 +1,6 @@
-from db import Base, engine
 from sqlalchemy import Column, Integer, String
+
+from shop.db import Base, engine
 
 
 class Models(Base):
