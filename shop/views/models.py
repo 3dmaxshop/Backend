@@ -45,6 +45,6 @@ def delete_model(model_id):
 def change_model():
     payload = request.json
     model = Model(**payload)
-    change_model = storage.change(model)
+    new_change_model = storage.change(model)
     logger.debug('change model')
-    return json.dumps(change_model)
+    return json.dumps(new_change_model)

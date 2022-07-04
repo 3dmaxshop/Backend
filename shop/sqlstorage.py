@@ -1,3 +1,5 @@
+from sqlalchemy.exc import IntegrityError
+
 from shop.db import db_session
 from shop.dbmodels import Models
 from shop.errors import ConflictError, NotFoundError
@@ -10,12 +12,13 @@ class Storage:
         new_model = Models(
             name=model.name,
             color=model.color,
-            catigories=model.catigories,
+            categories=model.categories,
         )
-        if Models.query.filter(Models.name == model.name).first():
+        try:
+            db_session.add(new_model)
+            db_session.commit()
+        except IntegrityError:
             raise ConflictError('model', f'name: {model.name}')
-        db_session.add(new_model)
-        db_session.commit()
         return Model.from_orm(new_model).dict()
 
     def get_by_uid(self, model_id):
@@ -40,12 +43,12 @@ class Storage:
         if not model:
             raise NotFoundError('model', f'uid: {change_model.uid}')
 
-        if Models.query.filter(Models.name == change_model.name, Models.uid != change_model.uid).first():
-            raise ConflictError('model', f'name: {model.name}')
         model.name = change_model.name
         model.color = change_model.color
-        model.catigories = change_model.catigories
+        model.categories = change_model.categories
 
-        db_session.commit()
-
+        try:
+            db_session.commit()
+        except IntegrityError:
+            raise ConflictError('model', f'name: {change_model.name}')
         return Model.from_orm(model).dict()
