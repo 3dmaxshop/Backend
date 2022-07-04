@@ -5,4 +5,7 @@ class Model(BaseModel):
     name: str
     color: str
     uid: int
-    catigories: str
+    categories: str
+
+    class Config:
+        orm_mode = True
