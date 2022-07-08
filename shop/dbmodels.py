@@ -12,5 +12,12 @@ class Models(Base):
     categories = Column(String, nullable=False)
 
 
+class Categories(Base):
+    __tablename__ = 'categories'
+
+    uid = Column(Integer, primary_key=True)
+    name = Column(String, unique=True, nullable=False)
+
+
 if __name__ == '__main__':
     Base.metadata.create_all(bind=engine)

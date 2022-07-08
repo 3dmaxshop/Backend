@@ -1,9 +1,9 @@
 from sqlalchemy.exc import IntegrityError
 
 from shop.db import db_session
-from shop.dbmodels import Models
+from shop.dbmodels import Categories, Models
 from shop.errors import ConflictError, NotFoundError
-from shop.schemas import Model
+from shop.schemas import Category, Model
 
 
 class Storage:
@@ -20,6 +20,17 @@ class Storage:
         except IntegrityError:
             raise ConflictError('model', f'name: {model.name}')
         return Model.from_orm(new_model).dict()
+
+    def add_category(self, categories: Category):
+        new_categories = Categories(
+            name=categories.name,
+        )
+        try:
+            db_session.add(new_categories)
+            db_session.commit()
+        except IntegrityError:
+            raise ConflictError('categories', f'name: {categories.name}')
+        return Category.from_orm(new_categories).dict()
 
     def get_by_uid(self, model_id):
         model = Models.query.filter(Models.uid == model_id).first()
@@ -52,3 +63,6 @@ class Storage:
         except IntegrityError:
             raise ConflictError('model', f'name: {change_model.name}')
         return Model.from_orm(model).dict()
+
+    def get_all_categories(self):
+        return [Categories.from_orm(categories).dict() for categories in Categories.query.all()]

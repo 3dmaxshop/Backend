@@ -9,3 +9,11 @@ class Model(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class Category(BaseModel):
+    name: str
+    uid: int
+
+    class Config:
+        orm_mode = True
