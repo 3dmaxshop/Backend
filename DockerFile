@@ -2,7 +2,7 @@ FROM python:3.10.2-slim
 
 ENV POETRY_VIRTUALENVS_CREATE=false
 
-WORKDIR /shop
+WORKDIR /app
 
 RUN pip install --no-cache-dir poetry
 
