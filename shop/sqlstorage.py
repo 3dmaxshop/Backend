@@ -12,7 +12,7 @@ class Storage:
         new_model = Models(
             name=model.name,
             color=model.color,
-            categories=model.categories,
+            category_id=model.category_id,
         )
         try:
             db_session.add(new_model)
@@ -45,7 +45,7 @@ class Storage:
 
         model.name = change_model.name
         model.color = change_model.color
-        model.categories = change_model.categories
+        model.category_id = change_model.category_id
 
         try:
             db_session.commit()
