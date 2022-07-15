@@ -1,5 +1,7 @@
+from flask_login import UserMixin
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
+from werkzeug.security import check_password_hash, generate_password_hash
 
 from shop.db import Base, engine
 
@@ -22,6 +24,21 @@ class Models(Base):
 
     def __repr__(self) -> str:
         return f'Models {self.uid} {self.name} {self.color} {self.categories_id}'
+
+
+class Users(Base, UserMixin):
+    __tablename__ = 'users'
+
+    id = Column(Integer, primary_key=True)
+    username = Column(String, unique=True, nullable=False, index=True)
+    password = Column(String, nullable=False)
+    role = Column(String, nullable=False, index=True)
+
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
 
 
 if __name__ == '__main__':
