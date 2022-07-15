@@ -14,7 +14,7 @@ class Categories(Base):
     models = relationship('Models')
 
 
-class Models(Base, UserMixin):
+class Models(Base):
     __tablename__ = 'models'
 
     uid = Column(Integer, primary_key=True)
@@ -26,7 +26,7 @@ class Models(Base, UserMixin):
         return f'Models {self.uid} {self.name} {self.color} {self.categories_id}'
 
 
-class Users(Base):
+class Users(Base, UserMixin):
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True)

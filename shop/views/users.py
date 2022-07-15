@@ -13,15 +13,21 @@ usersStorage = UsersStorage()
 routes = Blueprint('users', __name__)
 
 
-@routes.get('/')
-def get_all_categories():
-    return json.dumps(usersStorage.get_all_categories())
-
-
 @routes.post('/')
-def add_category():
+def add_user():
     payload = request.json
     payload['id'] = -1
     logger.debug('add users')
     user = usersStorage.add_user(User(**payload))
     return json.dumps(user)
+
+
+@routes.post('/checkauthorization/')
+def check_user():
+    payload = request.json
+    user = User(**payload)
+    logger.debug('check users')
+    user_authorization = usersStorage.check_user_password(user)
+    if user_authorization:
+        return json.dumps('True')
+    return json.dumps('False')

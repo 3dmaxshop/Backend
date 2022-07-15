@@ -23,3 +23,11 @@ class UsersStorage:
         except IntegrityError:
             raise ConflictError('user', f'name: {user.username}')
         return User.from_orm(new_model).dict()
+
+    def check_user_password(self, user: User):
+        user_in_db = Users.query.filter(Users.username == user.username).first()
+        if not user_in_db:
+            raise NotFoundError('user', f'uid: {user.username}')
+        if user_in_db.check_password(user.password):
+            return User.from_orm(user_in_db).dict()
+        return False
